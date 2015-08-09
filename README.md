@@ -1,4 +1,6 @@
 # BeaconML
+### Machine learning in action for iBeacon-based advertising
+
 Simple demo to show the machine learning in action for iBeacon-based advertising.
 
 Supplied CSV contains the collected data from a shopping mall, where iBeacons are installed.
