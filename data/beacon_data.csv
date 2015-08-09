@@ -1,0 +1,41 @@
+Mobile Platform,Visitor Type,iBeacon Proximity Zone,Week-end / Holiday?,Time of the Day,Previous Worked?,Executed Action,Message Type
+Android,New,Near,Yes,Noon,No,Click,Product Info
+Android,Returned,Far,Yes,Morning,No,Click,Product Info
+iOS,Frequent,Far,No,Noon,Yes,Enter Store,Joke
+Android,New,Immediate,No,Evening,No,Enter Store,Discount
+iOS,New,Near,No,Morning,No,Enter Store,Product Info
+iOS,Returned,Near,No,Noon,Yes,Enter Store,Product Info
+iOS,Frequent,Near,Yes,Evening,Yes,Click,Product Info
+iOS,Returned,Immediate,Yes,Evening,No,Enter Store,Discount
+Android,New,Immediate,Yes,Evening,No,Click,Product Info
+Android,Returned,Immediate,No,Noon,Yes,Click,Discount
+iOS,Returned,Far,No,Morning,Yes,Enter Store,Joke
+iOS,New,Far,No,Noon,No,Enter Store,Discount
+Android,New,Near,No,Morning,No,Enter Store,Discount
+iOS,Returned,Near,No,Noon,Yes,Click,Discount
+Android,Returned,Near,No,Morning,Yes,Click,Discount
+iOS,Frequent,Near,Yes,Evening,Yes,Enter Store,Discount
+iOS,Frequent,Immediate,Yes,Evening,No,Enter Store,Joke
+iOS,Frequent,Immediate,No,Evening,No,Enter Store,Discount
+Android,New,Immediate,No,Noon,No,Enter Store,Discount
+Android,New,Near,No,Noon,No,Enter Store,Product Info
+Android,Returned,Near,Yes,Noon,Yes,Click,Product Info
+Android,New,Near,Yes,Evening,No,Click,Product Info
+Android,Returned,Far,Yes,Evening,Yes,Click,Joke
+iOS,Returned,Near,No,Morning,Yes,Enter Store,Discount
+iOS,New,Immediate,No,Morning,No,Enter Store,Discount
+Android,Returned,Immediate,No,Morning,No,Enter Store,Joke
+iOS,Returned,Immediate,Yes,Noon,No,Click,Product Info
+iOS,Frequent,Near,Yes,Noon,No,Click,Product Info
+Android,Frequent,Far,Yes,Morning,Yes,Enter Store,Discount
+Android,Frequent,Far,Yes,Morning,Yes,Enter Store,Discount
+iOS,Frequent,Immediate,No,Evening,No,Enter Store,Discount
+Android,New,Immediate,No,Noon,No,Enter Store,Discount
+Android,New,Near,No,Noon,No,Enter Store,Product Info
+Android,Returned,Near,Yes,Noon,Yes,Click,Product Info
+iOS,Frequent,Immediate,Yes,Evening,No,Enter Store,Joke
+iOS,New,Near,No,Morning,No,Enter Store,Product Info
+iOS,Returned,Near,No,Noon,Yes,Enter Store,Product Info
+iOS,Frequent,Near,Yes,Evening,Yes,Click,Product Info
+iOS,Returned,Immediate,Yes,Evening,No,Enter Store,Discount
+Android,New,Immediate,Yes,Evening,No,Click,Product Info
