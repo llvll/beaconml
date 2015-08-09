@@ -10,4 +10,10 @@ on a mobile app's banner / button.
 
 This code is using TinyLearn module, which simplifies the classification tasks with Scikit-Learn and Pandas.
 
+TinyLearn module is still at an early development stage. Please use with caution and feel free to ask any questions: oleg.v.puzanov@gmail.com
+
+
+
+
+
 
