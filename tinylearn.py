@@ -42,7 +42,7 @@ class FeatureReducer(object):
         The default use case is about removing the features, which have a very small weight and won't be
         useful for classification tasks.
 
-        Feature weighting is implemented using ExtraTreeClassifier.
+        Feature weighting is implemented using ExtraTreesClassifier.
     """
     def __init__(self, df_features, df_targets, reduce_func=None):
         self.df_features = df_features
