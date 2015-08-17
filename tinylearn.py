@@ -37,10 +37,11 @@ from sklearn.linear_model import (LogisticRegression,
 
 
 class FeatureReducer(object):
-    """ Removes the features (columns) from the supplied DataFrame according to the function 'reduce_func'.
+    """ Removes the features (columns) from the supplied DataFrame according to the
+        function 'reduce_func'.
 
-        The default use case is about removing the features, which have a very small weight and won't be
-        useful for classification tasks.
+        The default use case is about removing the features, which have a very small weight
+        and won't be useful for classification tasks.
 
         Feature weighting is implemented using ExtraTreesClassifier.
     """
@@ -61,7 +62,8 @@ class FeatureReducer(object):
             for i in range(len(clf.feature_importances_)):
                 if self.reduce_func(clf.feature_importances_[i]):
                     total_dropped += 1
-                    logging.info("FeatureReducer: dropping column \'" + self.df_features.columns.values[i] + "\'")
+                    logging.info("FeatureReducer: dropping column \'" +
+                                 self.df_features.columns.values[i] + "\'")
                     self.dropped_cols.append(self.df_features.columns[i])
 
             [self.df_features.drop(c, axis=1, inplace=True) for c in self.dropped_cols]
@@ -70,8 +72,8 @@ class FeatureReducer(object):
     def print_weights(self, n_estimators=10):
         clf = ExtraTreesClassifier(n_estimators)
         clf.fit(self.df_features, self.df_targets).transform(self.df_features)
-        [print("Feature \'" + self.df_features.columns.values[i] +
-               " has weight " + clf.feature_importances_[i]) for i in range(len(clf.feature_importances_))]
+        [print("Feature \'" + self.df_features.columns.values[i] + " has weight " +
+               clf.feature_importances_[i]) for i in range(len(clf.feature_importances_))]
 
 
 class CrossValidator(object):
@@ -98,7 +100,8 @@ class CrossValidator(object):
 
 
 class CvEstimatorSelector(object):
-    """Executes the cross-validation procedures to discover the best performing estimator from the supplied ones.
+    """Executes the cross-validation procedures to discover the best performing estimator
+       from the supplied ones.
 
        The best estimator is selected according to the highest mean score.
     """
@@ -141,7 +144,8 @@ class CvEstimatorSelector(object):
 
 
 class GridSearchEstimatorSelector(object):
-    """Thin wrapper around GridSearchCV class of Scikit-Learn for discovering the best performing estimator.
+    """Thin wrapper around GridSearchCV class of Scikit-Learn for discovering
+       the best performing estimator.
     """
     def __init__(self, df_features, df_targets, cv=5):
         self.scores = {}
@@ -187,15 +191,18 @@ class GridSearchEstimatorSelector(object):
 
 
 class ClassificationFacade(object):
-    """Helper class to execute the whole classification workflow - from training to prediction to metrics reporting.
+    """Helper class to execute the whole classification workflow - from training to prediction
+       to metrics reporting.
 
-       Includes the default list of estimators with instances and parameters, which have been proven to work well.
+       Includes the default list of estimators with instances and parameters, which have been
+       proven to work well.
     """
     def __init__(self, df_features, df_targets, default=True, cv=5, reduce_func=None):
         if default:
             self.grid_search = GridSearchEstimatorSelector(df_features, df_targets, cv)
             self.grid_search.add_estimator('SVC', SVC(), {'kernel': ["linear", "rbf"],
-                                                      'C': [1, 5, 10, 50], 'gamma': [0.0, 0.001, 0.0001]})
+                                                          'C': [1, 5, 10, 50],
+                                                          'gamma': [0.0, 0.001, 0.0001]})
             self.grid_search.add_estimator('RandomForestClassifier', RandomForestClassifier(),
                                        {'n_estimators': [5, 10, 20, 50]})
             self.grid_search.add_estimator('ExtraTreeClassifier', ExtraTreesClassifier(),
@@ -203,8 +210,8 @@ class ClassificationFacade(object):
             self.grid_search.add_estimator('LogisticRegression', LogisticRegression(),
                                        {'C': [1, 5, 10, 50], 'solver': ["lbfgs", "liblinear"]})
             self.grid_search.add_estimator('SGDClassifier', SGDClassifier(),
-                                       {'n_iter': [5, 10, 20, 50], 'loss': ["squared_hinge", "perceptron",
-                                                                            "hinge", "huber"]})
+                                       {'n_iter': [5, 10, 20, 50],
+                                        'loss': ["squared_hinge", "perceptron", "hinge", "huber"]})
         self.reduce_func = reduce_func
         if reduce_func is not None:
             self.reducer = FeatureReducer(df_features, df_targets, reduce_func)
@@ -226,3 +233,4 @@ class ClassificationFacade(object):
             return self.grid_search.best_estimator.predict(df_data)
         else:
             return None
+
