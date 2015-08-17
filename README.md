@@ -8,6 +8,8 @@ Supplied CSV contains the collected data from a shopping mall, where iBeacons ar
 Every record defines the parameters for a successful case - visitor has entered a store or clicked
 on a mobile app's banner / button.
 
+IPython Notebook (.ipynb file) is included for step-by-step execution of the demo application with extra comments.
+
 This code is using TinyLearn framework, which simplifies the classification tasks with Python and the following modules: 
 
 * Scikit-Learn
