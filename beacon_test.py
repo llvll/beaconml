@@ -53,7 +53,7 @@ train_features, train_labels = some_data.iloc[:-5, :-1], some_data.iloc[:-5, -1]
 # Create an instance of CommonClassifier, which will use the default list of estimators.
 # Removing the features with a weight smaller than 0.1.
 wrk = CommonClassifier(default=True, cv=3, reduce_func=lambda x: x < 0.1)
-wrk.fit(train_features, train_label)
+wrk.fit(train_features, train_labels)
 wrk.print_fit_summary()
 
 # Predicting and decoding the labels back to strings
