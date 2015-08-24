@@ -27,6 +27,8 @@
 
 import logging
 import numpy as np
+from fastdtw import fastdtw
+from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.cross_validation import cross_val_score
 from sklearn.grid_search import GridSearchCV
 from sklearn.ensemble import (ExtraTreesClassifier,
@@ -190,16 +192,61 @@ class GridSearchEstimatorSelector(object):
                    str(self.scores[n])) for n in self.estimators.keys() if (n != self.selected_name)]
 
 
-class ClassificationFacade(object):
-    """Helper class to execute the whole classification workflow - from training to prediction
-       to metrics reporting.
+class KnnDtwClassifier(BaseEstimator, ClassifierMixin):
+    """Custom classifier implementation for Scikit-Learn using Dynamic Time Warping (DTW)
+       and KNN (K-Nearest Neighbors) algorithms.
+
+       This classifier can be used for labeling the varying-length sequences, like time series
+       or motion data.
+
+       FastDTW library is used for faster DTW calculations - linear instead of quadratic complexity.
+    """
+    def __init__(self, n_neighbors=1):
+        self.n_neighbors = n_neighbors
+        self.features = []
+        self.labels = []
+
+    def get_distance(self, x, y):
+        return fastdtw(x, y)[0]
+
+    def fit(self, X, y=None):
+        for index, l in enumerate(y):
+            self.features.append(X[index])
+            self.labels.append(l)
+        return self
+
+    def predict(self, X):
+        dist = np.array([self.get_distance(X, seq) for seq in self.features])
+        indices = dist.argsort()[:self.n_neighbors]
+        return np.array(self.labels)[indices]
+
+    def predict_ext(self, X):
+        dist = np.array([self.get_distance(X, seq) for seq in self.features])
+        indices = dist.argsort()[:self.n_neighbors]
+        return (dist[indices],
+                indices)
+
+
+class CommonClassifier(object):
+    """Helper class to execute the common classification workflow - from training to prediction
+       to metrics reporting with the popular ML algorithms, like SVM or Random Forest.
 
        Includes the default list of estimators with instances and parameters, which have been
        proven to work well.
     """
-    def __init__(self, df_features, df_targets, default=True, cv=5, reduce_func=None):
-        if default:
-            self.grid_search = GridSearchEstimatorSelector(df_features, df_targets, cv)
+    def __init__(self, default=True, cv=5, reduce_func=None):
+        self.cv = cv
+        self.default = default
+        self.reduce_func = reduce_func
+        self.reducer = None
+        self.grid_search = None
+
+    def add_estimator(self, name, instance, params):
+        self.grid_search.add_estimator(name, instance, params)
+
+    def fit(self, X, y=None):
+        if self.default:
+            self.grid_search = GridSearchEstimatorSelector(X, y, self.cv)
             self.grid_search.add_estimator('SVC', SVC(), {'kernel': ["linear", "rbf"],
                                                           'C': [1, 5, 10, 50],
                                                           'gamma': [0.0, 0.001, 0.0001]})
@@ -210,27 +257,23 @@ class ClassificationFacade(object):
             self.grid_search.add_estimator('LogisticRegression', LogisticRegression(),
                                        {'C': [1, 5, 10, 50], 'solver': ["lbfgs", "liblinear"]})
             self.grid_search.add_estimator('SGDClassifier', SGDClassifier(),
-                                       {'n_iter': [5, 10, 20, 50],
-                                        'loss': ["squared_hinge", "perceptron", "hinge", "huber"]})
-        self.reduce_func = reduce_func
-        if reduce_func is not None:
-            self.reducer = FeatureReducer(df_features, df_targets, reduce_func)
+                                       {'n_iter': [5, 10, 20, 50], 'alpha': [0.0001, 0.001],
+                                        'loss': ["hinge", "modified_huber",
+                                                 "huber", "squared_hinge", "perceptron"]})
+
+        if self.reduce_func is not None:
+            self.reducer = FeatureReducer(X, y, self.reduce_func)
             self.reducer.reduce(10)
 
-    def add_estimator(self, name, instance, params):
-        self.grid_search.add_estimator(name, instance, params)
-
-    def train(self):
         return self.grid_search.select_estimator()
 
-    def print_train_summary(self):
+    def print_fit_summary(self):
         return self.grid_search.print_summary()
 
-    def predict(self, df_data):
+    def predict(self, X):
         if self.grid_search.selected_name is not None:
             if self.reduce_func is not None and len(self.reducer.dropped_cols) > 0:
-                df_data.drop(self.reducer.dropped_cols, axis=1, inplace=True)
-            return self.grid_search.best_estimator.predict(df_data)
+                X.drop(self.reducer.dropped_cols, axis=1, inplace=True)
+            return self.grid_search.best_estimator.predict(X)
         else:
             return None
-
