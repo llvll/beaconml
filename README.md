@@ -1,7 +1,7 @@
 # BeaconML
 ### Machine learning in action for iBeacon-based advertising
 
-Simple demo to show the machine learning in action for iBeacon-based advertising.
+This is a simple demo to show the machine learning in action for iBeacon-based advertising.
 
 Supplied CSV contains the collected data from a shopping mall, where iBeacons are installed.
 
@@ -14,14 +14,7 @@ This code is using TinyLearn framework, which simplifies the classification task
 
 * Scikit-Learn
 * Pandas
-* Seqlearn
 * OpenCV
-* Mlpy
+* Other libraries, like FastDTW
 
 TinyLearn framework is still at an early development stage. Please use with caution and feel free to ask any questions: oleg.v.puzanov@gmail.com
-
-
-
-
-
-
