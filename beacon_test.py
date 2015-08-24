@@ -36,7 +36,7 @@ This code is using TinyLearn module, which simplifies the classification tasks w
 
 import pandas as pd
 import numpy as np
-from tinylearn import ClassificationFacade
+from tinylearn import CommonClassifier
 from sklearn.preprocessing import LabelEncoder
 
 some_data = pd.read_csv("data/beacon_data.csv", header=0, index_col=None)
@@ -50,9 +50,9 @@ for col_name in some_data:
 # Split the data into training and test sets (the last 5 items)
 train_features, train_labels = some_data.iloc[:-5, :-1], some_data.iloc[:-5, -1]
 
-# Create an instance of ClassificationFacade, which will use the default list of estimators.
+# Create an instance of CommonClassifier, which will use the default list of estimators.
 # Removing the features with a weight smaller than 0.1.
-wrk = ClassificationFacade(train_features, train_labels, default=True, cv=3, reduce_func=lambda x: x < 0.1)
+wrk = CommonClassifier(train_features, train_labels, default=True, cv=3, reduce_func=lambda x: x < 0.1)
 wrk.train()
 wrk.print_train_summary()
 
